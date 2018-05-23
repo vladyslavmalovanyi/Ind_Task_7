@@ -1,18 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.IO;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Newtonsoft.Json;
 
 namespace Ind_Task_7
@@ -44,7 +34,7 @@ namespace Ind_Task_7
                 {
                     for (int i = 0; i < _people.Count; i++)
                     {
-                        if(Person.count < _people[i].ID) { Person.count = _people[i].ID; } 
+                        if (Person.count < _people[i].ID) { Person.count = _people[i].ID; }
                     }
 
                 }
@@ -113,15 +103,20 @@ namespace Ind_Task_7
             }
         }
 
-        private void ButSort_Click(object sender, RoutedEventArgs e)
+        private async void ButSort_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (_people.Count > 0)
                 {
-                    _people.Sort();
-                    ListBoxInitialize();
+                    await Task.Run(() =>
+                    {
+                        _people.Sort();
+                    });
                 }
+
+                ListBoxInitialize();
+            
             }
             catch (Exception ex)
             {
@@ -129,25 +124,25 @@ namespace Ind_Task_7
                 MessageBoxButton.OK, MessageBoxImage.Error,
                 MessageBoxResult.OK, MessageBoxOptions.None);
             }
-        }
+}
 
         private void ButSave_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                string serialized = JsonConvert.SerializeObject(_people);
-                File.WriteAllText(_jsonFileName, serialized);
-                MessageBox.Show("Saved successfully", "Result",
-                    MessageBoxButton.OK, MessageBoxImage.Information,
-                    MessageBoxResult.OK, MessageBoxOptions.None);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Result",
-                    MessageBoxButton.OK, MessageBoxImage.Error,
-                    MessageBoxResult.OK, MessageBoxOptions.None);
-            }
-        }
+{
+    try
+    {
+        string serialized = JsonConvert.SerializeObject(_people);
+        File.WriteAllText(_jsonFileName, serialized);
+        MessageBox.Show("Saved successfully", "Result",
+            MessageBoxButton.OK, MessageBoxImage.Information,
+            MessageBoxResult.OK, MessageBoxOptions.None);
+    }
+    catch (Exception ex)
+    {
+        MessageBox.Show(ex.Message, "Result",
+            MessageBoxButton.OK, MessageBoxImage.Error,
+            MessageBoxResult.OK, MessageBoxOptions.None);
+    }
+}
 
         #endregion
     }
